@@ -1,13 +1,14 @@
 package org.kavus.inyakost.ntt;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.Set;
 
 @Entity
-public class Scene extends DefSubject<LDefinition> {
-    @ManyToOne
+public class Scene extends Identifiable<LDefinition> {
+    @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name="SHOW_ID")
     protected Show show;
 
@@ -20,8 +21,8 @@ public class Scene extends DefSubject<LDefinition> {
         super();
     }
 
-    public Scene(Set<Definition> definitionSet, Show show, int duration) {
-        super(definitionSet);
+    public Scene(Definer<LDefinition> definer, Show show, int duration) {
+        super(definer);
         this.show = show;
         this.duration = duration;
     }

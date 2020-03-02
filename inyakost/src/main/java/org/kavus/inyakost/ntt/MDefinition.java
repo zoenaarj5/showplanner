@@ -32,13 +32,8 @@ public class MDefinition extends Definition {
         super();
     }
 
-    public MDefinition(LanguageCode languageCode, @Size(max = 100) String name, @Size(max = 350) String description) {
-        super(languageCode);
-        this.name = name;
-        this.description = description;
-    }
-
-    public MDefinition(@Size(max = 100) String name, @Size(max = 350) String description) {
+    public MDefinition(LanguageCode languageCode, Definer subject, @Size(max = 100) String name, @Size(max = 350) String description) {
+        super(languageCode, subject);
         this.name = name;
         this.description = description;
     }

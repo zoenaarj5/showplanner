@@ -5,11 +5,12 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name="PASSWORD_CHANGE_REQUEST")
 public class PasswordChangeRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEMBER_ID")
     protected Member member;
     @Column(name="SENDER_IP_ADDRESS")

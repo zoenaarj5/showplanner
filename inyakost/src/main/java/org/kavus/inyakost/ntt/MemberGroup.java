@@ -6,12 +6,13 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-public class MemberGroup extends DefSubject<MDefinition> {
+@Table(name="MEMBER_GROUP")
+public class MemberGroup extends Identifiable<MDefinition> {
     @Column(unique = true)
     @Size(max = 100)
     protected String name;
     protected LocalDateTime creationDate;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name="GROUP_HAS_MEMBER")
     protected Set<Member> memberSet;
     public LocalDateTime getCreationDate() {

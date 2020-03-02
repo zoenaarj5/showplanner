@@ -1,15 +1,14 @@
 package org.kavus.inyakost.ntt;
 
 import javax.persistence.Entity;
-import java.util.Set;
 
 @Entity
-public class Character extends DefSubject<MDefinition> {
+public class Character extends Identifiable<MDefinition> {
     public Character() {
         super();
     }
 
-    public Character(Set<Definition> definitionSet) {
-        super(definitionSet);
+    public Character(Definer<MDefinition> definer) {
+        super(definer);
     }
 }

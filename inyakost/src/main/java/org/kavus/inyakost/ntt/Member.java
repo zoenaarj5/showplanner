@@ -22,7 +22,7 @@ public class Member {
             @AttributeOverride(name = "password",column = @Column(name="PASSWORD"))
     })
     protected SigninData signinData;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name="GROUP_HAS_MEMBER")
     protected Set<MemberGroup> memberGroupSet;
     @Override

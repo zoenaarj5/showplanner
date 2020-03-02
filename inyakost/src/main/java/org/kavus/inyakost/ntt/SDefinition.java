@@ -28,13 +28,8 @@ public class SDefinition extends Definition {
         super();
     }
 
-    public SDefinition(@Size(max = 100) String name, @Size(max = 200) String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public SDefinition(LanguageCode languageCode, @Size(max = 100) String name, @Size(max = 200) String description) {
-        super(languageCode);
+    public SDefinition(LanguageCode languageCode, Definer subject, @Size(max = 100) String name, @Size(max = 200) String description) {
+        super(languageCode, subject);
         this.name = name;
         this.description = description;
     }

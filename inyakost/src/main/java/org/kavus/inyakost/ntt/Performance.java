@@ -7,13 +7,16 @@ public class Performance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "SCHEDULED_SHOW_ID")
+    protected ScheduledShow scheduledShow;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="ROLE_ID")
     protected Role role;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="PERFORMER_ID")
     protected Member performer;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="SCENE_ID")
     protected Scene scene;
 
@@ -49,11 +52,20 @@ public class Performance {
         this.scene = scene;
     }
 
+    public ScheduledShow getScheduledShow() {
+        return scheduledShow;
+    }
+
+    public void setScheduledShow(ScheduledShow scheduledShow) {
+        this.scheduledShow = scheduledShow;
+    }
+
     public Performance() {
         super();
     }
 
-    public Performance(Role role, Member performer, Scene scene) {
+    public Performance(ScheduledShow scheduledShow, Role role, Member performer, Scene scene) {
+        this.scheduledShow = scheduledShow;
         this.role = role;
         this.performer = performer;
         this.scene = scene;

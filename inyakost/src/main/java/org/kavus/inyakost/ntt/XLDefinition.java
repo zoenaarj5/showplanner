@@ -42,8 +42,8 @@ public class XLDefinition extends Definition {
         super();
     }
 
-    public XLDefinition(LanguageCode languageCode, @Size(max = 150) String title, @Size(max = 500) String intro, @Size(max = 2000) String body) {
-        super(languageCode);
+    public XLDefinition(LanguageCode languageCode, Definer subject, @Size(max = 150) String title, @Size(max = 500) String intro, @Size(max = 2000) String body) {
+        super(languageCode, subject);
         this.title = title;
         this.intro = intro;
         this.body = body;

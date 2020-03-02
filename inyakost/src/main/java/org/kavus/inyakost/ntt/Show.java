@@ -5,10 +5,10 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-public class Show extends DefSubject<MDefinition> {
+public class Show extends Identifiable<MDefinition> {
     @Column(name="CREATION_DATE")
     protected LocalDate creationDate;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name="SHOW_ID")
     protected Set<Scene> sceneSet;
     @Transient
@@ -24,13 +24,21 @@ public class Show extends DefSubject<MDefinition> {
         this.duration = duration;
     }
 
-    public Show(Set<Definition> definitionSet, LocalDate creationDate, Set<Scene> sceneSet, int duration) {
-        super(definitionSet);
+    public Show(Definer<MDefinition> definer, LocalDate creationDate, Set<Scene> sceneSet, int duration) {
+        super(definer);
         this.creationDate = creationDate;
         this.sceneSet = sceneSet;
         this.duration = duration;
     }
-
+    @Override
+    public String toString(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("\nSHOW CREATED ON ");
+        sb.append(creationDate);
+        sb.append("\n");
+        sb.append(super.toString());
+        return sb.toString();
+    }
     public Set<Scene> getSceneSet() {
         return sceneSet;
     }

@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Event extends DefSubject<LDefinition>{
-    @ManyToOne
+public class Event extends Identifiable<LDefinition> {
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="PLACE_ID")
     protected Place place;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     protected Set<ScheduledShow> scheduledShowSet;
 
     public Place getPlace() {

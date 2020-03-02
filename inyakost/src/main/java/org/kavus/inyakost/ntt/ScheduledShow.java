@@ -9,10 +9,10 @@ public class ScheduledShow {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="EVENT_ID")
     protected Event event;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="SHOW_ID")
     protected Show show;
     protected LocalDateTime startingTime;

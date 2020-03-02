@@ -1,13 +1,11 @@
 package org.kavus.showplanner;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class ShowplannerApplicationTests {
 
-	@Test
+//	@Test
 	void contextLoads() {
 	}
-
 }

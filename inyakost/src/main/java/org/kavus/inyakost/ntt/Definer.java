@@ -4,8 +4,9 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class DefSubject<T extends Definition> {
+@Table(name="DEF_SUBJECT")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Definer<T extends Definition> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
@@ -13,11 +14,11 @@ public abstract class DefSubject<T extends Definition> {
     @JoinColumn(name="DEFINITION_ID")
     protected Set<Definition> definitionSet;
 
-    public DefSubject() {
+    public Definer() {
         super();
     }
 
-    public DefSubject(Set<Definition> definitionSet) {
+    public Definer(Set<Definition> definitionSet) {
         this.definitionSet = definitionSet;
         updateDefinition();
     }
