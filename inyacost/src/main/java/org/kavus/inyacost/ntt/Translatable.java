@@ -12,7 +12,7 @@ public abstract class Translatable <T extends Translation>{
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
     @OneToMany(mappedBy = "translatable",targetEntity = Translation.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    protected Set<Translation> translationSet;
+    protected Set<T> translationSet;
     @Transient
     protected T translation;
     public long getId() {
@@ -22,7 +22,7 @@ public abstract class Translatable <T extends Translation>{
         super();
     }
 
-    public Translatable(Set<Translation> translationSet) {
+    public Translatable(Set<T> translationSet) {
         this.translationSet = translationSet;
         updateTranslation();
     }
@@ -31,11 +31,11 @@ public abstract class Translatable <T extends Translation>{
         this.id = id;
     }
 
-    public Set<Translation> getTranslationSet() {
+    public Set<T> getTranslationSet() {
         return translationSet;
     }
 
-    public void setTranslationSet(Set<Translation> translationSet) {
+    public void setTranslationSet(Set<T> translationSet) {
         this.translationSet = translationSet;
         updateTranslation();
     }
@@ -49,9 +49,9 @@ public abstract class Translatable <T extends Translation>{
     public void updateTranslation(){
         final LanguageCode clc=LanguageCode.getCurrentLanguageCode();
         if(translationSet!=null){
-            for(Translation trans:translationSet){
+            for(T trans:translationSet){
                 if(trans.getLanguageCode()==clc){
-                    setTranslation((T)trans);
+                    setTranslation(trans);
                     break;
                 }
             }
@@ -62,8 +62,8 @@ public abstract class Translatable <T extends Translation>{
             translationSet=new HashSet<>();
         }
         final Object[] lcObjz=translationSet.stream().map(t->t.getLanguageCode()).toArray();
-        final Set<Translation> toRemoveSet=new HashSet<>();
-        for (Translation trans : translationSet) {
+        final Set<T> toRemoveSet=new HashSet<>();
+        for (T trans : translationSet) {
             for(Object lcObj:lcObjz) {
                 LanguageCode lc=(LanguageCode)lcObj;
                 if (trans.getLanguageCode() == lc) {
@@ -80,8 +80,8 @@ public abstract class Translatable <T extends Translation>{
         if(translationSet==null){
             translationSet=new HashSet<>();
         }
-        final Set<Translation> toRemoveSet=new HashSet<>();
-        for (Translation trans : translationSet) {
+        final Set<T> toRemoveSet=new HashSet<>();
+        for (T trans : translationSet) {
             if(trans.getLanguageCode()==translation.getLanguageCode()){
                 toRemoveSet.add(trans);
             }

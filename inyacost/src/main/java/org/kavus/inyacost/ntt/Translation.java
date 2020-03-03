@@ -2,6 +2,7 @@ package org.kavus.inyacost.ntt;
 
 import javax.persistence.*;
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Translation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -9,7 +10,7 @@ public abstract class Translation {
     @Column(name="LANGUAGE_CODE")
     @Enumerated(EnumType.STRING)
     protected LanguageCode languageCode;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="TRANSLATABLE_ID")
     protected Translatable translatable;
 

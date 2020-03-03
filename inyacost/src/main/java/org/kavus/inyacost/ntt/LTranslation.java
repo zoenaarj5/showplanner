@@ -57,7 +57,7 @@ public class LTranslation extends Translation {
     @Override
     public String toString(){
         StringBuilder sb=new StringBuilder();
-        sb.append("ID\n:\t");
+        sb.append("\nID:\t");
         sb.append(this.id);
         sb.append("\nTITLE:\t");
         sb.append(this.title);

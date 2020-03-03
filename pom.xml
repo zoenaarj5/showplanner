@@ -20,7 +20,7 @@
         <java.version>1.8</java.version>
     </properties>
     <modules>
-        <module>inyakost</module>
+        <!--module>inyakost</module-->
         <module>inyacost</module>
     </modules>
 </project>
