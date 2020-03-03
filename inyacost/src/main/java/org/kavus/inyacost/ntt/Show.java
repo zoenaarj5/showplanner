@@ -6,7 +6,7 @@ import java.util.Set;
 @Entity
 public class Show extends Translatable<LTranslation>{
     @OneToMany(targetEntity = Scene.class,mappedBy = "show",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    protected Set<Scene> scenes=new HashSet<>();
+    protected Set<Scene> scenes;
 
     public Show() {
         super();
@@ -26,7 +26,7 @@ public class Show extends Translatable<LTranslation>{
     @Override
     public String toString(){
         final StringBuilder sb=new StringBuilder(super.toString());
-        if(scenes!=null) {
+        if(scenes!=null && !scenes.isEmpty()) {
             sb.append("\nScenes included:");
             scenes.forEach(scene -> {
                 sb.append("\n-\t");
