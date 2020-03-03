@@ -5,7 +5,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="L_TRANSLATION")
+//@Table(name="L_TRANSLATION")
 public class LTranslation extends Translation {
     public LTranslation(String title, String intro, String body) {
         this.title = title;
@@ -61,9 +61,9 @@ public class LTranslation extends Translation {
         sb.append(this.id);
         sb.append("\nTITLE:\t");
         sb.append(this.title);
-        sb.append("\nINTRO:\n");
+        sb.append("\nINTRO:\t");
         sb.append(this.intro);
-        sb.append("\nBODY:\n");
+        sb.append("\nBODY:\t");
         sb.append(this.body);
         sb.append("\n");
         return sb.toString();

@@ -5,7 +5,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="XL_TRANSLATION")
+//@Table(name="XL_TRANSLATION")
 public class XLTranslation extends Translation {
     @Size(max = 150)
     protected String title;
@@ -51,13 +51,13 @@ public class XLTranslation extends Translation {
     @Override
     public String toString(){
         StringBuilder sb=new StringBuilder();
-        sb.append("ID\n:\t");
+        sb.append("ID:\t");
         sb.append(this.id);
         sb.append("\nTITLE:\t");
         sb.append(this.title);
-        sb.append("\nINTRO:\n");
+        sb.append("\nINTRO:\t");
         sb.append(this.intro);
-        sb.append("\nBODY:\n");
+        sb.append("\nBODY:\t");
         sb.append(this.body);
         sb.append("\n");
         return sb.toString();

@@ -50,10 +50,15 @@ public abstract class Translatable <T extends Translation>{
         final LanguageCode clc=LanguageCode.getCurrentLanguageCode();
         if(translationSet!=null){
             for(T trans:translationSet){
-                if(trans.getLanguageCode()==clc){
+                LanguageCode lgc=trans.getLanguageCode();
+                if(lgc==clc){
+                    System.out.println("Matching language code! "+lgc+" = "+clc);
                     setTranslation(trans);
                     break;
+                }else{
+                    System.out.println("Not corresponding language code:"+lgc+" <> "+clc);
                 }
+                System.out.println("Translation is now: "+translation);
             }
         }
     }
@@ -94,10 +99,8 @@ public abstract class Translatable <T extends Translation>{
     }
     @Override
     public String toString(){
-        if(translation!=null) {
-            return ">>>TRANS ID="+id+"\n"+translation.toString();
-        }else{
-            return "No translations available";
-        }
+        StringBuilder sb=new StringBuilder(">>>TRANS ID="+id+"\n");
+        sb.append(translation!=null?translation.toString():"No translations available");
+        return sb.toString();
     }
 }

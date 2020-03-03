@@ -5,7 +5,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="S_TRANSLATION")
+//@Table(name="S_TRANSLATION")
 public class STranslation extends Translation {
     @Size(max = 100)
     protected String name;
@@ -44,7 +44,7 @@ public class STranslation extends Translation {
         sb.append(this.id);
         sb.append("\nNAME:\t");
         sb.append(this.name);
-        sb.append("\nDESCRIPTION:\n");
+        sb.append("\nDESCRIPTION:\t");
         sb.append(this.description);
         sb.append("\n");
         return sb.toString();

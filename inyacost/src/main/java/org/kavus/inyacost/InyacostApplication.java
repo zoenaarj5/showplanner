@@ -38,38 +38,69 @@ public class InyacostApplication {
 			LanguageCode.setCurrentLanguageCode(LanguageCode.FR);
 			//PERSISTING CONTENT
 			//Persisting shows
-			final Show showSaved[]=new Show[1];
-			showSaved[0]=showRepository.save(show1);
-			System.out.println("Saved:");
-			System.out.println(showSaved[0]);
+			final Show showsSaved[]=new Show[1];
+			showsSaved[0]=showRepository.save(show1);
+			System.out.println("\nPRINTING PERSISTED SHOW(S)\n");
+			System.out.println("sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~");
+			System.out.println("Saved show now:");
+			System.out.println(showsSaved[0]);
+			System.out.println("sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~sho~~~");
 			//Persisting translations
-			final LTranslation[]
-				trnzSho1=new LTranslation[]{showTranslation1EN,showTranslation1FR},
-				trnzSce11=new LTranslation[]{sceneTranslation11EN,sceneTranslation11FR},
-				trnzSce12=new LTranslation[]{sceneTranslation12EN,sceneTranslation12FR},
-				trnzSce11Saved=new LTranslation[trnzSce11.length],
-				trnzSce12Saved=new LTranslation[trnzSce12.length];
-			final LTranslation[][]
-					trnzSce=new LTranslation[][]{trnzSce11,trnzSce12},
-					trnzSceSaved=new LTranslation[][]{trnzSce11Saved,trnzSce12Saved};
-			for(int i=0;i<trnzSce.length;i++) {
-				for (int j = 0; j < trnzSce[i].length; j++) {
-//					trnzSceSaved[i][j] = lTranslationRepository.save(trnzSce[i][j]);
-					System.out.println(trnzSceSaved[i][j]);
-				}
-			}
-			System.out.println("length "+trnzSceSaved.length+"width "+trnzSceSaved[0].length);
 			//Persisting scenes
 //			scene11.addTranslations(trnzSce11Saved);
 //			scene12.addTranslations(trnzSce12Saved);
-			final Scene[]
-				scenes=new Scene[]{scene11,scene12},
-				scenesSaved=new Scene[scenes.length];
-			for(int i=0;i<scenes.length;i++){
-				scenesSaved[i]=sceneRepository.save(scenes[i]);
-				System.out.println("Saved now:\n"+scenesSaved[i]);
+			final Scene[] scenesSaved=new Scene[]{scene11,scene12};
+			System.out.println("\nPRINTING PERSISTED SCENE(S)\n");
+			for(int i=0;i<scenesSaved.length;i++){
+//				scenesSaved[i].setShow(showSaved[0]);
+				sceneRepository.save(scenesSaved[i]);
+				System.out.println("scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===");
+				System.out.println("Saved scene now:\n"+scenesSaved[i]);
+				System.out.println("scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===scn===");
 			}
+			final LTranslation[]
+				trnzSho1Saved=new LTranslation[]{showTranslation1EN,showTranslation1FR},
+				trnzSce11Saved=new LTranslation[]{sceneTranslation11EN,sceneTranslation11FR},
+				trnzSce12Saved=new LTranslation[]{sceneTranslation12EN,sceneTranslation12FR};
+			final LTranslation[][]
+					trnzSceSaved=new LTranslation[][]{trnzSce11Saved,trnzSce12Saved};
+			System.out.println("\nPRINTING PERSISTED TRANSLATION(S)\n");
+			for(int i=0;i<trnzSceSaved.length;i++) {
+				for (int j = 0; j < trnzSceSaved[i].length; j++) {
+					trnzSceSaved[i][j] = lTranslationRepository.save(trnzSceSaved[i][j]);
+					System.out.println("trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\");
+					System.out.println("Saved translation now: \n"+trnzSceSaved[i][j]);
+					System.out.println("trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\trn\\\\\\");
+				}
+			}
+			System.out.println("length "+trnzSceSaved.length+"width "+trnzSceSaved[0].length);
+			System.out.println("ADDING TRANSLATIONS TO SCENES + PERSISTING SCENES");
+			for(int i=0;i<trnzSceSaved.length;i++) {
+				for (int j = 0; j < trnzSceSaved[i].length; j++) {
+//					trnzSceSaved[i][j].setTranslatable(scenesSaved[i]);
+//					trnzSceSaved[i][j] = lTranslationRepository.save(trnzSceSaved[i][j]);
+					scenesSaved[i].addTranslation(trnzSceSaved[i][j]);
+					sceneRepository.save(scenesSaved[i]);
+					System.out.println("Just added translation:|||||||||||||||||||||||||||||||||||");
+					System.out.println(trnzSceSaved[i][j]);
+					System.out.println("The scene is now:........................................");
+					System.out.println(scenesSaved[i]);
+				}
+				final int ii=i;
+				sceneRepository.findById(Long.valueOf(scenesSaved[i].getId())).ifPresent(scene -> {
+					scenesSaved[ii] = scene;
+					System.out.println("Related scene:");
+					System.out.println(scene);
+				});
+			}
+//			System.out.println("PERSISTING SCENES AFTER ADDING TRANSLATIONS ?");
 			//PRINTING CONTENT
+			//Printing scenes
+			System.out.println("AND NOW THE SCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEENEEESSS!!!!!!!!!!!!!!");
+			sceneRepository.findAll().forEach(scene -> {
+				System.out.println(scene);
+			});
+			System.out.println("DONE WITH THE SCEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEENEEESSS............");
 			//Printing translations
 			System.out.println("End of program");
 		};

@@ -1,11 +1,12 @@
 package org.kavus.inyacost.ntt;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 @Entity
 public class Show extends Translatable<LTranslation>{
     @OneToMany(targetEntity = Scene.class,mappedBy = "show",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    protected Set<Scene> scenes;
+    protected Set<Scene> scenes=new HashSet<>();
 
     public Show() {
         super();
@@ -25,7 +26,6 @@ public class Show extends Translatable<LTranslation>{
     @Override
     public String toString(){
         final StringBuilder sb=new StringBuilder(super.toString());
-        sb.append("\n");
         if(scenes!=null) {
             sb.append("\nScenes included:");
             scenes.forEach(scene -> {
