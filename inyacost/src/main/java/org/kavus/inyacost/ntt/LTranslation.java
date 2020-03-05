@@ -59,6 +59,8 @@ public class LTranslation extends Translation {
         StringBuilder sb=new StringBuilder();
         sb.append("\nID:\t");
         sb.append(this.id);
+        sb.append("\nTRANSLATABLE ID:\t");
+        sb.append(translatable==null?"None":translatable.getId());
         sb.append("\nTITLE:\t");
         sb.append(this.title);
         sb.append("\nINTRO:\t");

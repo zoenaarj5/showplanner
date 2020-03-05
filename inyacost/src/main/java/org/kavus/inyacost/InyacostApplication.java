@@ -38,14 +38,51 @@ public class InyacostApplication {
 			// ADDING TRANSLATIONS TO SHOW
 			final Show[] shows=new Show[]{show1};
 			final LTranslation[] showTranslations=new LTranslation[]{showTranslation1EN,showTranslation1FR};
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>SHOW BEFORE PERSIST 1: ID="+shows[0].getId());
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW BEFORE PERSIST 1: ID="+shows[0].getId());
 			showRepository.save(shows[0]);
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER PERSIST 1: ID="+shows[0].getId());
-			System.out.println(shows[0]);
+			showRepository.findById(shows[0].getId()).ifPresent(show -> {
+				System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER PERSIST 1 [ORIGINAL]: ID="+show.getId());
+				System.out.println(show);
+				System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER PERSIST 1 [COPY]: ID="+shows[0].getId());
+				System.out.println(shows[0]);
+			});
 			lTranslationRepository.saveAll(Arrays.asList(showTranslations));
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			System.out.println("\nvvvvvvvvvvvvvvvvv PRINTING SHOW TRANSLATIONS AFTER PERSIST 1 - BEFORE FETCH");
+			Arrays.stream(showTranslations).forEach(lt->System.out.print(""+lt.getId()+"["+lt.getLanguageCode()+"],"));
+			lTranslationRepository.findAll().forEach(t->{
+				System.out.println("\nXXXXXXXXXXXXXXXXXXXXX PRINTING SHOW TRANSLATION AFTER PERSIST 1 - AFTER FETCH: ID="+t.getId()+"["+t.getLanguageCode()+"]");
+				System.out.println(t);
+			});
 			shows[0].addTranslations(showTranslations);
-			System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER PERSIST 2: ID="+shows[0].getId());
+			//Printing show after adding translations to show
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			System.out.println("\n>>> >>> >>> PRINTING SHOW AFTER ADDING TRANSLATIONS - BEFORE PERSIST 2 <<< <<< <<<\n");
 			System.out.println(shows[0]);
+			Arrays.stream(showTranslations).forEach(t->{
+				System.out.println("\nTranslation to add to show. . . . . . . . . . .");
+				System.out.println(t);
+				System.out.println("\nAdding translation to add to show. . . . . . . . . . .");
+				shows[0].addTranslation(t);
+				t.setTranslatable(shows[0]);
+				System.out.println("\nShow(as translatable) set for translation:\t"+t.getTranslatable()+". . . . . . . . . . .");
+				lTranslationRepository.save(t);
+			});
+//			showRepository.save(shows[0]);
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			System.out.println("\n>>> >>> >>> PRINTING SHOW AFTER ADDING TRANSLATIONS - AFTER PERSIST 2 - BEFORE FETCH <<< <<< <<<\n");
+			System.out.println(shows[0]);
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			showRepository.findById(shows[0].getId()).ifPresent(show -> {
+				System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER ADDING TRANSLATIONS - AFTER PERSIST 2 - AFTER FETCH [ORIGINAL]: ID="+show.getId());
+				System.out.println(show);
+				shows[0]=show;
+				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER ADDING TRANSLATIONS - AFTER PERSIST 2 - AFTER FETCH [COPY]: ID="+shows[0].getId());
+				System.out.println(shows[0]);
+			});
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+
 			final Scene[] scenes=new Scene[]{scene11,scene12};
 			final LTranslation[][] sceneTranslations=new LTranslation[][]{{sceneTranslation11EN,sceneTranslation11FR},{sceneTranslation12EN,sceneTranslation12FR}};
 			for(int i=0;i<sceneTranslations.length;i++){
@@ -61,7 +98,18 @@ public class InyacostApplication {
 			System.out.println("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\SHOW BEFORE ADDING SCENES: ID="+shows[0].getId());
 			System.out.println(shows[0]);
 			shows[0].setScenes(new HashSet<>(Arrays.asList(scenes)));
-			showRepository.save(shows[0]);
+			for(Scene scene:scenes){
+				scene.setShow(shows[0]);
+				sceneRepository.save(scene);
+			}
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			sceneRepository.findAll().forEach(scene -> {
+				System.out.print("\n...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...");
+				System.out.println("Printing scene after fetch: ID="+scene.getId());
+				System.out.println(scene);
+			});
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+//			showRepository.save(shows[0]);
 			System.out.println("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\SHOW AFTER ADDING SCENES: ID="+shows[0].getId());
 			System.out.println(shows[0]);
 			showRepository.findById(Long.valueOf(shows[0].getId())).ifPresent(show -> {
@@ -69,6 +117,8 @@ public class InyacostApplication {
 				System.out.println(show);
 				shows[0]=show;
 			});
+			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			System.out.println("END OF PROGRAM");
 		};
 	}
 }

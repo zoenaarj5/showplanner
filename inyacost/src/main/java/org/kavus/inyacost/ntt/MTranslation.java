@@ -5,7 +5,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-//@Table(name="M_DEFINITION")
+//@Table(name="M_TRANSLATION")
 public class MTranslation extends Translation {
     @Size(max = 100)
     protected String name;

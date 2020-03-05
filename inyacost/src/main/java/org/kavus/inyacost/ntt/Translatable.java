@@ -11,7 +11,7 @@ public abstract class Translatable <T extends Translation>{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-    @OneToMany(mappedBy = "translatable",targetEntity = Translation.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "translatable",targetEntity = Translation.class,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     protected Set<T> translationSet;
     @Transient
     protected T translation;
@@ -78,7 +78,6 @@ public abstract class Translatable <T extends Translation>{
         }
         translationSet.removeAll(toRemoveSet);
         translationSet.addAll(Arrays.asList(translations));
-        System.out.println("Added "+translations.length+" translation(s).\n");
         updateTranslation();
     }
     public void addTranslation(T translation){
@@ -100,7 +99,7 @@ public abstract class Translatable <T extends Translation>{
     }
     @Override
     public String toString(){
-        StringBuilder sb=new StringBuilder(">>>TRANS ID="+id+"\n");
+        StringBuilder sb=new StringBuilder(">>>TRANSLATABLE ID="+id+"\n");
         sb.append(translation!=null?""+translationSet.size()+" available translations. Here's the current:\n"+translation.toString():"No translations available");
         return sb.toString();
     }
