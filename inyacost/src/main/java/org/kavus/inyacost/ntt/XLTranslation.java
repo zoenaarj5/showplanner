@@ -1,11 +1,13 @@
 package org.kavus.inyacost.ntt;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-//@Table(name="XL_TRANSLATION")
+@Table(name="XL_TRANSLATION")
 public class XLTranslation extends Translation {
     @Size(max = 150)
     protected String title;
@@ -42,7 +44,7 @@ public class XLTranslation extends Translation {
         super();
     }
 
-    public XLTranslation(LanguageCode languageCode, Translatable subject, @Size(max = 150) String title, @Size(max = 500) String intro, @Size(max = 2000) String body) {
+    public XLTranslation(LanguageCode languageCode, Translator subject, @Size(max = 150) String title, @Size(max = 500) String intro, @Size(max = 2000) String body) {
         super(languageCode, subject);
         this.title = title;
         this.intro = intro;

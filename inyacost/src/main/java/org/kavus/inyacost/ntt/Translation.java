@@ -11,8 +11,8 @@ public abstract class Translation {
     @Enumerated(EnumType.STRING)
     protected LanguageCode languageCode;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="TRANSLATABLE_ID")
-    protected Translatable translatable;
+    @JoinColumn(name="TRANSLATOR_ID")
+    protected Translator translator;
 
     public long getId() {
         return id;
@@ -22,9 +22,9 @@ public abstract class Translation {
         super();
     }
 
-    public Translation(LanguageCode languageCode, Translatable translatable) {
+    public Translation(LanguageCode languageCode, Translator translator) {
         this.languageCode = languageCode;
-        this.translatable = translatable;
+        this.translator = translator;
     }
 
     public void setId(long id) {
@@ -39,11 +39,11 @@ public abstract class Translation {
         this.languageCode = languageCode;
     }
 
-    public Translatable getTranslatable() {
-        return translatable;
+    public Translator getTranslator() {
+        return translator;
     }
 
-    public void setTranslatable(Translatable translatable) {
-        this.translatable = translatable;
+    public void setTranslator(Translator translator) {
+        this.translator = translator;
     }
 }

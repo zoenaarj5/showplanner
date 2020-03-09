@@ -30,7 +30,7 @@ public class Show extends Translatable<LTranslation>{
             sb.append("\nScenes included:");
             scenes.forEach(scene -> {
                 sb.append("\n-\t");
-                LTranslation sTran=scene.getTranslation();
+                LTranslation sTran=scene.getTranslator().getTranslation();
                 sb.append(sTran==null?("#"+scene.getId()):sTran.getTitle());
             });
         }else{

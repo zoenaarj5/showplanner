@@ -1,11 +1,13 @@
 package org.kavus.inyacost.ntt;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-//@Table(name="L_TRANSLATION")
+@Table(name="L_TRANSLATION")
 public class LTranslation extends Translation {
     public LTranslation(String title, String intro, String body) {
         this.title = title;
@@ -47,7 +49,7 @@ public class LTranslation extends Translation {
         super();
     }
 
-    public LTranslation(LanguageCode languageCode, Translatable subject, @Size(max = 150) String title, @Size(max = 250) String intro, @Size(max = 600) String body) {
+    public LTranslation(LanguageCode languageCode, Translator subject, @Size(max = 150) String title, @Size(max = 250) String intro, @Size(max = 600) String body) {
         super(languageCode, subject);
         this.title = title;
         this.intro = intro;
@@ -59,8 +61,8 @@ public class LTranslation extends Translation {
         StringBuilder sb=new StringBuilder();
         sb.append("\nID:\t");
         sb.append(this.id);
-        sb.append("\nTRANSLATABLE ID:\t");
-        sb.append(translatable==null?"None":translatable.getId());
+        sb.append("\nTRANSLATOR ID:\t");
+        sb.append(translator==null?"None":translator.getId());
         sb.append("\nTITLE:\t");
         sb.append(this.title);
         sb.append("\nINTRO:\t");

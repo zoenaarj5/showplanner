@@ -30,7 +30,7 @@ public class Scene extends Translatable<LTranslation>{
         if(show==null){
             sb.append("Show not defined");
         }else {
-            LTranslation sTran = show.getTranslation();
+            LTranslation sTran = show.getTranslator().getTranslation();
             sb.append(sTran == null ? show.getId() : sTran.getTitle());
             sb.append("\n");
         }
