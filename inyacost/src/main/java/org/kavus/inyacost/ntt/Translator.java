@@ -9,7 +9,8 @@ public class Translator<T extends Translation> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected long id;
-
+    @OneToOne(targetEntity = Translatable.class,mappedBy = "translator",cascade = CascadeType.ALL)
+    protected Translatable<T> translatable;
     public long getId() {
         return id;
     }
@@ -20,6 +21,15 @@ public class Translator<T extends Translation> {
     protected Set<Translation> translationSet;
     @Transient
     protected T translation;
+
+    public Translatable<T> getTranslatable() {
+        return translatable;
+    }
+
+    public void setTranslatable(Translatable<T> translatable) {
+        this.translatable = translatable;
+    }
+
     public Set<Translation> getTranslationSet() {
         return translationSet;
     }
@@ -93,7 +103,15 @@ public class Translator<T extends Translation> {
     @Override
     public String toString(){
         StringBuilder sb=new StringBuilder(">>>TRANSLATOR ID="+id+"\n");
-        sb.append((translationSet==null || translationSet.isEmpty())?"No translations available":(""+translationSet.size()+" available translations. Here's the current:\n"+translationSet.toString()));
+        System.out.println("Updating translation...");
+        updateTranslation();
+        System.out.println("Translation updated.");
+        sb.append((translationSet==null || translationSet.isEmpty())
+            ?"No translations available"
+            :(""+translationSet.size()+" - Available translations:\n"+translationSet.toString()+"\nCurrent translation: "
+                +(translation==null?"None":(""+translation.getId()+"["+translation.getLanguageCode()+"]"))
+            )
+        );
         return sb.toString();
     }
 }

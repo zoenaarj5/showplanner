@@ -34,7 +34,7 @@ public abstract class Translatable <T extends Translation>{
     }
     @Override
     public String toString(){
-        StringBuilder sb=new StringBuilder("<<< TRANSLATABLE ID="+id);
+        StringBuilder sb=new StringBuilder("\n. . . PRINTING TRANSLATABLE . . .\n\n<<< TRANSLATABLE ID="+id);
         sb.append(translator.toString());
         return sb.toString();
     }

@@ -33,8 +33,9 @@ public class InyacostApplication {
 	@Bean
 	public CommandLineRunner demo(ShowRepository showRepository, SceneRepository sceneRepository, TranslationRepository translationRepository, TranslatorRepository translatorRepository){
 		return args -> {
+			LanguageCode.setCurrentLanguageCode(LanguageCode.FR);
 			//PERSISTING TRANSLATORS
-			final Translator<Translation> showTranslators[]=new Translator[]{show1Translator};
+			final Translator<LTranslation> showTranslators[]=new Translator[]{show1Translator};
 			translatorRepository.save(showTranslators[0]);
 			System.out.println("____________________________________________________________________________________________________________________________________________________________");
 			translatorRepository.findById(showTranslators[0].getId()).ifPresent(translator -> {
@@ -80,139 +81,104 @@ public class InyacostApplication {
 					System.out.println(showTranslations[ii]);
 				});
 			}
-
-
-//			translationRepository.saveAll(Arrays.asList(showTranslations));
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("Adding translations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-//			showTranslators[0].addTranslations(showTranslations);
-			System.out.println("Persisting translator after adding translations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-			translatorRepository.save(showTranslators[0]);
-			System.out.println("Done adding translations + persisting. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			translatorRepository.findById(showTranslators[0].getId()).ifPresent(t->{
-//			translatorRepository.findById(showTranslators[0].getId()).ifPresent(t->{
-				System.out.println("Printing fetched translator after adding translations + persist + fetch [ORIGINAL]");
-				System.out.println(t);
-				showTranslators[0]=t;
-				System.out.println("Printing fetched translator after adding translations + persist + fetch [COPY]");
-				System.out.println(showTranslators[0]);
+			System.out.println("««««««««««««««««««««««««««««««««««««««««««««««");
+			showRepository.findById(shows[0].getId()).ifPresent(show -> {
+				System.out.println("Finally Printing (translated) show... [ORIGINAL]");
+				System.out.println(show);
+				shows[0]=show;
+				System.out.println("Finally Printing (translated) show... [COPY]");
+				System.out.println(shows[0]);
 			});
+			System.out.println("««««««««««««««««««««««««««««««««««««««««««««««");
+			final Translator<LTranslation>[][] sceneTranslators=new Translator[][]{{scene11Translator,scene12Translator}};
+			final Translation[][][] sceneTranslations=new Translation[][][]{{{sceneTranslation11EN,sceneTranslation11FR},{sceneTranslation12EN,sceneTranslation12FR}}};
+			final Scene[][] scenes=new Scene[][]{{scene11,scene12}};
 			System.out.println("____________________________________________________________________________________________________________________________________________________________");
+			System.out.println("PERSISTING TRANSLATORS + TRANSLATIONS + SCENES");
+			for(int i=0;i<sceneTranslators.length;i++){
+				final int ii=i;
+				for(int j=0;j<sceneTranslators[i].length;j++) {
+					final int jj=j;
+					System.out.println("\nPersisting translator ID="+sceneTranslators[i][j].getId());
+					translatorRepository.save(sceneTranslators[i][j]);
+					System.out.println("Translator persisted: ID="+sceneTranslators[i][j].getId());
+					translatorRepository.findById(sceneTranslators[i][j].getId()).ifPresent(tran->{
+						System.out.println("===================================================");
+						System.out.println("\nPrinting translator after persist [ORIGINAL]. . .");
+						System.out.println(tran);
+						sceneTranslators[ii][jj]=tran;
+						System.out.println("\nPrinting translator after persist [COPY]. . .");
+						System.out.println(sceneTranslators[ii][jj]);
+						System.out.println("===================================================");
+						System.out.println("Persisting scene: ID="+scenes[ii][jj].getId());
+						scenes[ii][jj].setTranslator(sceneTranslators[ii][jj]);
+						sceneTranslators[ii][jj].setTranslatable(scenes[ii][jj]);
+						sceneRepository.save(scenes[ii][jj]);
+						scenes[ii][jj].setShow(shows[0]);
+//						showRepository.save(shows[0]);
+						System.out.println("\n\nPrinting scene #"+scenes[ii][jj].getId()+" - after adding show/////////////////////////");
+						System.out.println(scenes[ii][jj]);
+						System.out.println("\nPrinting shows[0]++++++++++++++++++++++++++++++++++++++++++++++");
+						System.out.println(shows[0]);
+						System.out.println("\nDONE Printing shows[0]++++++++++++++++++++++++++++++++++++++++++++++");
+						sceneRepository.save(scenes[ii][jj]);
+						System.out.println("\n\nPersisted scene --> ID="+scenes[ii][jj].getId());
+							sceneRepository.findById(scenes[ii][jj].getId()).ifPresent(sc->{
+								scenes[ii][jj]=sc;
+								sceneRepository.findById(scenes[ii][jj].getId()).ifPresent(sce->{
+									System.out.println("********************************************************");
+									System.out.println("Printing scene[][] after setting translator + persist [ORIGINAL]");
+									System.out.println(sce);
+									scenes[ii][jj]=sce;
+									System.out.println("Printing scene[][] after setting translator + persist [COPY]");
+									System.out.println(scenes[ii][jj]);
+									//PERSISTING TRANSLATIONS
+									System.out.println("********************************************************");
+									System.out.println("Persisting translations");
+//									sceneTranslators[ii][jj].addTranslations(sceneTranslations[ii][jj]);
+									translatorRepository.save(sceneTranslators[ii][jj]);
+									for(int k=0;k<sceneTranslations[ii][jj].length;k++){
+										final int kk=k;
+										System.out.println("\n\tPersisting translation ################################################\n");
+										System.out.println("\n\t\t################ Translation ID BEFORE persist = "+sceneTranslations[ii][jj][k].getId());
+										translationRepository.save(sceneTranslations[ii][jj][k]);
+										translationRepository.findById(sceneTranslations[ii][jj][k].getId()).ifPresent(stran->{
+											sceneTranslations[ii][jj][kk]=stran;
+											System.out.println("\n\t\t################ Translation ID AFTER persist = "+sceneTranslations[ii][jj][kk].getId());
+											sceneTranslations[ii][jj][kk].setTranslator(sceneTranslators[ii][jj]);
+											translationRepository.save(sceneTranslations[ii][jj][kk]);
+											translationRepository.findById(sceneTranslations[ii][jj][kk].getId()).ifPresent(str->{
+												System.out.println("| | | | | | | | | | | | | | | | | | | | PRINTING TRANSLATION AFTER PERSIST [ORIGINAL]");
+												System.out.println(str);
+												System.out.println("--- --- --- --- Translator id = "+str.getTranslator().getId());
+												System.out.println("| | | | | | | | | | | | | | | | | | | | DONE PRINTING TRANSLATION AFTER PERSIST [original]");
+												sceneTranslations[ii][jj][kk]=str;
+												System.out.println("| | | | | | | | | | | | | | | | | | | | PRINTING TRANSLATION AFTER PERSIST [COPY]");
+												System.out.println(sceneTranslations[ii][jj][kk]);
+												System.out.println("--- --- --- --- Translator id = "+sceneTranslations[ii][jj][kk].getTranslator().getId());
+												System.out.println("| | | | | | | | | | | | | | | | | | | | DONE PRINTING TRANSLATION AFTER PERSIST [copy]");
+											});
+										});
+									}
+								});
+							});
+						});
+					System.out.println("\n...........................PRINTING RESULTING SHOWS AFTER ALL...........................\n");
+					showRepository.findAll().forEach(show -> {
+						System.out.println("\t\t{{{{{{{{{{{{{{{{{{{{{{{{{{{   Printing SHOW   }}}}}}}}}}}}}}}}}}}}}}}}}}}\n");
+						System.out.println(show);
+						System.out.println("\t\t{{{{{{{{{{{{{{{{{{{{{{{{{{{ Done printing show }}}}}}}}}}}}}}}}}}}}}}}}}}}\n");
+					});
+					System.out.println("\n...........................DONE PRINTING RESULTING SHOWS...........................\n");
+					System.out.println("\n...........................PRINTING RESULTING SCENES AFTER ALL...........................\n");
+					sceneRepository.findAll().forEach(scene -> {
+						System.out.println("\t\t{{{{{{{{{{{{{{{{{{{{{{{{{{{   Printing SCENE   }}}}}}}}}}}}}}}}}}}}}}}}}}}\n");
+						System.out.println(scene);
+						System.out.println("\t\t{{{{{{{{{{{{{{{{{{{{{{{{{{{ Done printing scene }}}}}}}}}}}}}}}}}}}}}}}}}}}\n");
+					});
+					System.out.println("\n...........................DONE PRINTING RESULTING SCENES...........................\n");
+				}
+			}
 		};
 	}
-/*		@Bean
-		public CommandLineRunner demo(ShowRepository showRepository, SceneRepository sceneRepository, TranslationRepository translationRepository, TranslatorRepository translatorRepository){
-		return args->{
-			LanguageCode.setCurrentLanguageCode(LanguageCode.FR);
-			//PERSISTING TRANSLATORS
-			final Translator<Translation>[] showTranslators=new Translator[]{show1Translator};
-			translatorRepository.save(showTranslators[0]);
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~PRINTING SHOW TRANSLATOR AFTER PERSIST - BEFORE FETCH");
-			translatorRepository.findAll().forEach(translator -> {
-				System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~PRINTING SHOW TRANSLATOR AFTER PERSIST - AFTER FETCH");
-				System.out.println(translator);
-			});
-			// ADDING TRANSLATIONS TO SHOW
-			final Show[] shows=new Show[]{show1};
-			final Translation[] showTranslations=new Translation[]{showTranslation1EN,showTranslation1FR};
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW BEFORE PERSIST 1: ID="+shows[0].getId());
-			showRepository.save(shows[0]);
-			showRepository.findById(shows[0].getId()).ifPresent(show -> {
-				System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER PERSIST 1 [ORIGINAL]: ID="+show.getId());
-				System.out.println(show);
-				System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER PERSIST 1 [COPY]: ID="+shows[0].getId());
-				System.out.println(shows[0]);
-			});
-			shows[0].setTranslator(show1Translator);
-			showRepository.save(shows[0]);
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("\n++++++++++++++++++++SHOW AFTER ADDING TRANSLATOR - AFTER PERSIST - BEFORE FETCH");
-
-			System.out.println(shows[0]);
-			showRepository.findById(shows[0].getId()).ifPresent(show -> {
-				shows[0]=show;
-				System.out.println("\n++++++++++++++++++++SHOW AFTER ADDING TRANSLATOR - AFTER PERSIST [ORIGINAL]- AFTER FETCH");
-				System.out.println(show);
-				System.out.println("\n++++++++++++++++++++SHOW AFTER ADDING TRANSLATOR - AFTER PERSIST [COPY]- AFTER FETCH");
-				System.out.println(shows[0]);
-			});
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			translationRepository.saveAll(Arrays.asList(showTranslations));
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("\nvvvvvvvvvvvvvvvvv PRINTING SHOW TRANSLATIONS AFTER PERSIST 1 - BEFORE FETCH");
-			Arrays.stream(showTranslations).forEach(lt->System.out.print(""+lt.getId()+"["+lt.getLanguageCode()+"],"));
-			translationRepository.findAll().forEach(t->{
-				System.out.println("\nXXXXXXXXXXXXXXXXXXXXX PRINTING SHOW TRANSLATION AFTER PERSIST 1 - AFTER FETCH: ID="+t.getId()+"["+t.getLanguageCode()+"]");
-				System.out.println(t);
-			});
-			shows[0].getTranslator().addTranslations(showTranslations);
-			//Printing show after adding translations to show
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("\n>>> >>> >>> PRINTING SHOW AFTER ADDING TRANSLATIONS - BEFORE PERSIST 2 <<< <<< <<<\n");
-			System.out.println(shows[0]);
-			Arrays.stream(showTranslations).forEach(t->{
-				System.out.println("\nTranslation to add to show. . . . . . . . . . .");
-				System.out.println(t);
-				System.out.println("\nAdding translation to add to show. . . . . . . . . . .");
-				shows[0].getTranslator().addTranslation(t);
-				System.out.println("\nShow(as translatable) set for translation:\t"+t.getTranslatable()+". . . . . . . . . . .");
-				translationRepository.save(t);
-			});
-//			showRepository.save(shows[0]);
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("\n>>> >>> >>> PRINTING SHOW AFTER ADDING TRANSLATIONS - AFTER PERSIST 2 - BEFORE FETCH <<< <<< <<<\n");
-			System.out.println(shows[0]);
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			showRepository.findById(shows[0].getId()).ifPresent(show -> {
-				System.out.println("\n>>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER ADDING TRANSLATIONS - AFTER PERSIST 2 - AFTER FETCH [ORIGINAL]: ID="+show.getId());
-				System.out.println(show);
-				shows[0]=show;
-				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>SHOW AFTER ADDING TRANSLATIONS - AFTER PERSIST 2 - AFTER FETCH [COPY]: ID="+shows[0].getId());
-				System.out.println(shows[0]);
-			});
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-
-			final Scene[] scenes=new Scene[]{scene11,scene12};
-			final Translation[][] sceneTranslations=new Translation[][]{{sceneTranslation11EN,sceneTranslation11FR},{sceneTranslation12EN,sceneTranslation12FR}};
-			for(int i=0;i<sceneTranslations.length;i++){
-				System.out.println("||||||||||||||||||||||||||||||||SCENE BEFORE PERSIST 1: ID="+scenes[i].getId());
-				sceneRepository.save(scenes[i]);
-				translationRepository.saveAll(Arrays.asList(sceneTranslations[i]));
-				System.out.println("||||||||||||||||||||||||||||||||SCENE AFTER PERSIST 1: ID="+scenes[i].getId());
-				System.out.println(scenes[i]);
-				scenes[i].getTranslator().addTranslations(sceneTranslations[i]);
-				System.out.println("||||||||||||||||||||||||||||||||SCENE AFTER PERSIST 2: ID="+scenes[i].getId());
-				System.out.println(scenes[i]);
-			}
-			System.out.println("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\SHOW BEFORE ADDING SCENES: ID="+shows[0].getId());
-			System.out.println(shows[0]);
-			shows[0].setScenes(new HashSet<>(Arrays.asList(scenes)));
-			for(Scene scene:scenes){
-				scene.setShow(shows[0]);
-				sceneRepository.save(scene);
-			}
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			sceneRepository.findAll().forEach(scene -> {
-				System.out.print("\n...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...  ...");
-				System.out.println("Printing scene after fetch: ID="+scene.getId());
-				System.out.println(scene);
-			});
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-//			showRepository.save(shows[0]);
-			System.out.println("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\SHOW AFTER ADDING SCENES: ID="+shows[0].getId());
-			System.out.println(shows[0]);
-			showRepository.findById(Long.valueOf(shows[0].getId())).ifPresent(show -> {
-				System.out.println("\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\SHOW AFTER ADDING SCENES + PERSIST: ID="+shows[0].getId());
-				System.out.println(show);
-				shows[0]=show;
-			});
-			System.out.println("____________________________________________________________________________________________________________________________________________________________");
-			System.out.println("END OF PROGRAM");
-		};
-	}
-
- */
 }
